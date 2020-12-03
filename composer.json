@@ -1,0 +1,33 @@
+{
+    "name": "chuckbe/chuckcms-module-pos",
+    "description": "pos module for use in chuckcms",
+    "keywords": ["chuckbe", "chuckcms", "cms", "laravel", "php"],
+    "homepage": "https://github.com/chuckbe/chuckcms-module-pos",
+    "require": {
+        "php": ">=7.2.0",
+        "laravel/framework": "~5.8||^6.0||^7.0.0",
+        "chuckbe/chuckcms": "~0.1"
+    },
+    "authors": [
+        {
+            "name": "Karel Brijs",
+            "email": "karel@chuck.be"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Chuckbe\\ChuckcmsModulePos\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Chuckbe\\ChuckcmsModulePos\\ChuckcmsModulePosServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "minimum-stability": "dev"
+}
