@@ -4,6 +4,7 @@ namespace Chuckbe\ChuckcmsModulePos\Commands;
 
 use Chuckbe\Chuckcms\Chuck\ModuleRepository;
 use Illuminate\console\Command;
+use Chuckbe\Chuckcms\Models\Module;
 
 class InstallModulePos extends Command 
 {
@@ -37,7 +38,7 @@ class InstallModulePos extends Command
     {
         parent::__construct();
 
-        $this->moduleRepository = $moduleRepository
+        $this->moduleRepository = $moduleRepository;
     }
 
     /**
@@ -47,21 +48,30 @@ class InstallModulePos extends Command
      */
     public function handle()
     {
-        $name = 'ChuckCMS POS Module';
-        $slug = 'chuckcms-module-pos';
-        $hintpath = 'chuckcms-module-pos';
-        $path = 'chuckbe/chuckcms-module-ecommerce';
-        $type = 'module';
-        $version = '0.0.1';
-        $author = 'Karel Brijs (karel@chuck.be)';
 
         $json = [];
-        $json['admin']['show_in_menu'] = true;
-        $json['admin']['menu'] = array(
-                'name' => 'POS',
-                'icon' => 'shopping-cart',
-                'route' => '#',
-        )
+        $json['admin']['menu']['submenu']['seventh']['name'] = 'POS';
+        $json['admin']['menu']['submenu']['seventh']['icon'] = true;
+        $json['admin']['menu']['submenu']['seventh']['icon_data'] = 'printer';
+        $json['admin']['menu']['submenu']['seventh']['route'] = 'dashboard.module.pos.index';
+        $json['admin']['menu']['submenu']['seventh']['has_submenu'] = false;
+        $json['admin']['menu']['submenu']['seventh']['submenu'] = null;
+        
+        $module = Module::where('slug', 'chuckcms-module-ecommerce')->firstOrFail();
+
+        $data = $module->json;
+
+        $merge = array_merge($data['admin']['menu']['submenu'], $json['admin']['menu']['submenu']); 
+
+        $data['admin']['menu']['submenu'] = $merge;
+
+        $module->json = $data;
+
+        $module->update();
+
+        // dd($data);
+        
+
 
         $this->info('.         .');
         $this->info('..         ..');

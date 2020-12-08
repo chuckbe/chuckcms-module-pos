@@ -15,6 +15,16 @@ class ChuckcmsModulePosServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadRoutesFrom(__DIR__.'/routes/routes.php');
+        
+        $this->publishes([
+            __DIR__.'/../assets' => public_path('chuckbe/chuckcms-module-pos'),
+        ], 'chuckcms-module-pos');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                InstallModulePos::class,
+            ]);
+        }
     }
 
     /**
