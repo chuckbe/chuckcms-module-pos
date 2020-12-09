@@ -152,6 +152,9 @@ html, body, row {
     padding-top: 1rem;
     text-align: center;
 }
+.menuItemArea .tab-pane .posproduct {
+    cursor: pointer;
+}
 .handlerArea {
     height: 18vh;
     margin: 0;
@@ -205,16 +208,34 @@ html, body, row {
     max-width: 100%;
     margin: 0;
 }
+.bestelTabHandler nav {
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+}
+.bestelTabHandler nav::-webkit-scrollbar  {
+    display: none;
+}
 .bestelTabHandler nav .nav-link{
-    background-color: #E72870;
-    color: #fff;
     border-radius: 0;
     margin-left: .1rem;
     margin-right: .1rem;
-}
-.bestelTabHandler nav .nav-link.active {
     background-color: rgba(231, 40, 112, 0.12);
     color: #E72870;
+    min-width: fit-content;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+}
+.bestelTabHandler nav .nav-link .remove-tab {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 30px;
+}
+.bestelTabHandler nav .nav-link.active {
+    background-color: #E72870;
+    color: #fff;
 }
 .bestelTabHandler nav .nav-link {
     font-size: .8rem;
@@ -231,6 +252,7 @@ html, body, row {
     max-height: 100%;
     scrollbar-width: thin;
     scrollbar-color: rgba(231, 40, 112, 0.65) #f8f9fa;
+    width: 100%;
 }
 .bestelTabArea > div::-webkit-scrollbar {
     width: 11px;
@@ -276,6 +298,7 @@ html, body, row {
 .bestelTabArea .bestelOrder .bestelOrderQuantity{
     max-width: 100%;
     display: flex;
+    justify-content: center;
 }
 .bestelTabArea .bestelOrder .bestelOrderQuantity input{
     max-width: 1.2rem;

@@ -231,11 +231,14 @@
             </div>
             <div class="bestelTabHandler row">
                 <nav class="nav nav-pills flex-column flex-sm-row" id="bestelNavigationTab" role="tablist">       
-                    <a class="flex-sm-fill text-sm-center nav-link"  id="bestelNavigationnNieuweBestellingTab" href="#nieuweBestelling" role="tab" data-toggle="tab" aria-controls="nieuweBestellingTab" aria-selected="false">
-                        <i class="fas fa-plus"></i>
-                        nieuwe order
+                    <a class="flex-sm-fill text-sm-center nav-link"  id="bestelNavigationnNieuweBestellingTab" href="#nieuweBestelling" aria-selected="false">
+                        <span><i class="fas fa-plus"></i><span>
+                        <span>nieuwe order</span>
                     </a>
-                    <a class="flex-sm-fill text-sm-center nav-link active" id="bestelNavigationbestelcode0123Tab" href="#bestelcode0123" role="tab" data-toggle="tab" aria-controls="bestelcode0123Tab" aria-selected="true">bestelcode: #0123</a>
+                    <a class="flex-sm-fill text-sm-center nav-link active" id="bestelNavigationbestelcode0123Tab" href="#bestelcode0123" role="tab" data-toggle="tab" aria-controls="bestelcode0123Tab" aria-selected="true">
+                        <span>bestelcode: #0123</span>
+                        <span class="remove-tab"><i class="fas fa-times-circle"></i></span>
+                    </a>
                 </nav>
             </div>
             <div class="bestelTabArea row">
@@ -244,10 +247,12 @@
                         <div class="bestelOrder row align-items-center">
                             <div class="col-5 bestelOrderDetails">
                                 <div class="col bestelOrderImg">
-                                    <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="orderImage">
+                                    <div class="preloadimage"></div>
+                                    {{-- <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="orderImage"> --}}
                                 </div>
                                 <div class="col bestelOrderTitle">
-                                    <span>Doosje van 6</span>
+                                    <div class="text-line"> </div>
+                                    {{-- <span>Doosje van 6</span> --}}
                                 </div> 
                             </div>
                             <div class="col-4 bestelOrderQuantity">
@@ -264,59 +269,8 @@
                                 </div>
                             </div>
                             <div class="col-3 bestelOrderPrice">
-                              € 15,00
-                            </div>
-                        </div>
-                        <div class="bestelOrder row align-items-center">
-                            <div class="col-5 bestelOrderDetails">
-                                <div class="col bestelOrderImg">
-                                    <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="orderImage">
-                                </div>
-                                <div class="col bestelOrderTitle">
-                                    <span>Doosje van 6</span>
-                                </div> 
-                            </div>
-                            <div class="col-4 bestelOrderQuantity">
-                                <div class="bestelOrderQuantityControl trash">
-                                    <a href="#">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </div>
-                                <input type="text" id="quantity" name="quantity" value="1">
-                                <div class="bestelOrderQuantityControl">
-                                    <a href="#">
-                                        <i class="fas fa-plus"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-3 bestelOrderPrice">
-                              € 15,00
-                            </div>
-                        </div>
-                        <div class="bestelOrder row align-items-center">
-                            <div class="col-5 bestelOrderDetails">
-                                <div class="col bestelOrderImg">
-                                    <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="orderImage">
-                                </div>
-                                <div class="col bestelOrderTitle">
-                                    <span>Doosje van 6</span>
-                                </div> 
-                            </div>
-                            <div class="col-4 bestelOrderQuantity">
-                                <div class="bestelOrderQuantityControl trash">
-                                    <a href="#">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </div>
-                                <input type="text" id="quantity" name="quantity" value="1">
-                                <div class="bestelOrderQuantityControl">
-                                    <a href="#">
-                                        <i class="fas fa-plus"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-3 bestelOrderPrice">
-                              € 15,00
+                              {{-- € 15,00 --}}
+                              <div class="text-line" style="width: 50%"> </div>
                             </div>
                         </div>
                     </div>
@@ -380,8 +334,31 @@
 @endsection
 @section('scripts')
 <script>
+var GenRandom =  {
+	
+    Stored: [],
+	
+	Job: function(){
+		var newId = Date.now().toString().substr(6); // or use any method that you want to achieve this string
+		
+        if( !this.Check(newId) ){
+            this.Stored.push(newId);
+            return newId;
+        }
+        
+        return this.Job();
+	},
+	
+	Check: function(id){
+		for( var i = 0; i < this.Stored.length; i++ ){
+			if( this.Stored[i] == id ) return true;
+		}
+		return false;
+	}
+	
+};
 $(document).ready(function(){
-  $.ajax({
+    $.ajax({
         url: "http://chuck.package/dashboard/pos/data",
         type: 'GET',
         dataType: 'json', // added data type
@@ -443,7 +420,7 @@ $(document).ready(function(){
                         featured_img = url+product.json.images[key].url.replace(" ","%20");
                       }
                     }
-                    let $card = $(`<div class="col-3 p-1">
+                    let $card = $(`<div class="col-3 p-1 posproduct" data-pid=${product.id}>
                                     <div class="card shadow-sm">
                                         <div class="card-body">
                                           <h5 class="card-title">${product.json.title.nl}</h5>
@@ -458,26 +435,48 @@ $(document).ready(function(){
                                         </div>
                                     </div>
                                 </div>`);
-                      
-                    
                     $(`.tab-pane#${category.json.name.toLowerCase()} #row${category.json.name.toLowerCase()}`).append($card);
                   }
                 });
-                //console.log($(`#${category.json.name.toLowerCase()}`));
               });
             }
-
-            
-
-            parsedObject.products.forEach((product, productIndex)=> {
-              parsedObject.collections.forEach((category,categoryIndex)=> {
-                if(category.id == product.json.collection) {
-                  console.log(category.json.name);
-                }
-              });
-            });
         }
     });
+    var checkExist = setInterval(function() {
+        if ($('.posproduct').length) {
+            $( ".posproduct" ).each(function(index) {
+                $(this).on("click", function(){
+                    var id = $(this).data('pid');
+                    console.log(id);
+                });
+            });
+            clearInterval(checkExist);
+        }
+    }, 100); // check every 100ms
+
+    // bestel navigation system
+    $('#bestelNavigationnNieuweBestellingTab').on("click", function() {
+        $('#bestelNavigationTab').children().removeClass("active");
+        $('#bestelNavigationTabContent').children().removeClass("active");
+        let $randomBestelCode = GenRandom.Job();
+        let $newTab = $(`<a class="flex-sm-fill text-sm-center nav-link active" id="bestelNavigationbestelcode${$randomBestelCode}Tab" href="#bestelcode${$randomBestelCode}" role="tab" data-toggle="tab" aria-controls="bestelcode${$randomBestelCode}Tab" aria-selected="true"><span>bestelcode: #${$randomBestelCode}</span><span class="remove-tab"><i class="fas fa-times-circle"></i></span></a>`)
+        let $newTabPane = $(`<div class="tab-pane fade show active" id="bestelcode${$randomBestelCode}"  role="tabpanel" aria-labelledby="bestelcode${$randomBestelCode}Tab"></div>`)
+        $('#bestelNavigationTab #bestelNavigationnNieuweBestellingTab').after($newTab);
+        $('#bestelNavigationTabContent').prepend($newTabPane);
+    });
+    
+    
+    $(document).on("click","#bestelNavigationTab .nav-link .remove-tab",function() {
+        let $tab = $(this).parent();
+        let tabpaneid = $($tab).prop('href').split('#')[1];
+        let $nextTab = $tab.next('.nav-link');
+        let $nextTabPane = $(`#bestelNavigationTabContent #${tabpaneid}`).next('.tab-pane');
+        $nextTab.addClass("active");
+        $nextTabPane.addClass("active");
+        $(`#bestelNavigationTabContent #${tabpaneid}`).remove();
+        $($tab).remove();
+    });
+    // bestel navigation system ends
 });
 </script>
 @endsection
