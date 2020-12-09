@@ -26,7 +26,7 @@
             </div>
             <div class="menuArea row">
                 <div class="container">
-                {{ Cookie::get('ProductCookie') }}
+                {{-- {{ dd( Auth::user()->name )}} --}}
                     <nav>
                         <ul class="nav nav-pills" id="navigationTab" role="tablist">
                           <li class="nav-item mr-3">
@@ -183,15 +183,15 @@
                                 <div class="card-body">
                                   <h5 class="card-title">Kassierinfomatie</h5>
                                   <div class="row pb-2 align-items-center">
-                                      <div class="col-3">
+                                      {{-- <div class="col-3">
                                         <img src="{{asset('chuckbe/chuckcms-module-pos/send-money-in-person-from-jamaica-resp.webp')}}" class="img-fluid" alt="handler">
+                                      </div> --}}
+                                      <div class="col-7 m-0 py-1 px-3">
+                                        <p class="card-text mb-1">{{ucwords(Auth::user()->name)}}</p>
+                                        {{-- <button class="btn btn-sm">textje</button> --}}
                                       </div>
-                                      <div class="col-5 m-0 p-1">
-                                        <p class="card-text mb-1">Floortje Hegemans</p>
-                                        <button class="btn btn-sm">textje</button>
-                                      </div>
-                                      <div class="col-4 m-0 p-0">
-                                        <button class="btn">Ontkoppelen</button>
+                                      <div class="col-5 m-0 py-0 px-3 d-flex justify-content-end">
+                                        <a href="{{URL::to('/logout')}}" class="btn">Ontkoppelen</a>
                                       </div>
                                   </div>
                                 </div>
@@ -387,8 +387,6 @@ $(document).ready(function(){
             // READ STRING FROM LOCAL STORAGE
             var retrievedObject = localStorage.getItem('pos-products');
 
-            setCookie('ProductCookie', retrievedObject, 7);
-
             // CONVERT STRING TO REGULAR JS OBJECT
             var parsedObject = JSON.parse(retrievedObject);
 
@@ -420,13 +418,14 @@ $(document).ready(function(){
                         featured_img = url+product.json.images[key].url.replace(" ","%20");
                       }
                     }
-                    let $card = $(`<div class="col-3 p-1 posproduct" data-pid=${product.id}>
+                    let $card = $(`<div class="col-3 p-1 posproduct ${(product.json.quantity > 0) ? '' : 'unavailable'}" data-pid=${product.id}>
                                     <div class="card shadow-sm">
                                         <div class="card-body">
                                           <h5 class="card-title">${product.json.title.nl}</h5>
                                           <div class="row">
                                               <div class="col">
                                                 <h6 class="card-subtitle mb-2 text-muted">€ ${parseFloat(product.json.price.final).toFixed(2).replace(".", ",")}</h6>
+                                                ${(product.json.quantity > 0) ? '' : '<p style="font-size: 10px; color: #e72870">Niet beschikbaar</p>'}
                                               </div>
                                               <div class="col">
                                                 <img src=${featured_img} class="img-fluid" alt=${product.json.title.nl}>
@@ -447,7 +446,7 @@ $(document).ready(function(){
             $( ".posproduct" ).each(function(index) {
                 $(this).on("click", function(){
                     var id = $(this).data('pid');
-                    console.log(id);
+                    addToCart(id);
                 });
             });
             clearInterval(checkExist);
@@ -477,6 +476,22 @@ $(document).ready(function(){
         $($tab).remove();
     });
     // bestel navigation system ends
+
+    // bestel cart area
+    const addToCart = function(id) {
+       // console.log(`add ${id} to cart`);
+       var local = localStorage.getItem('pos-products');
+       var localParsed = JSON.parse(local);
+       localParsed.products.forEach((product, productIndex)=> {
+           if(product.id == id){
+               console.log(product.json.page_title.nl);
+
+           }
+       });
+
+    }
+
+    // bestel cart area ends
 });
 </script>
 @endsection
