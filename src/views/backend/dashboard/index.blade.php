@@ -44,187 +44,63 @@
                     <div class="tab-content" id="navigationTabContent">
                         <div class="tab-pane fade show active" id="donuts" role="tabpanel" aria-labelledby="donutsTab">
                             <div class="row">
-                                <div class="col p-1">
+                                <div class="col-md-3 p-1">
                                     <div class="card shadow-sm">
                                         <div class="card-body">
-                                          <h5 class="card-title">Doosje van 6</h5>
-                                          <div class="row">
-                                              <div class="col">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 15,00</h6>
-                                              </div>
-                                              <div class="col">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="donuttello discovery box">
-                                              </div>
-                                          </div>
+                                            <div class="text-line"> </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="text-line"> </div>
+                                                </div>
+                                                <div class="col-6"> 
+                                                    <div class="preloadimage"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col p-1">
+                                <div class="col-md-3 p-1">
                                     <div class="card shadow-sm">
                                         <div class="card-body">
-                                          <h5 class="card-title">Doosje van 6</h5>
-                                          <div class="row">
-                                              <div class="col">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 15,00</h6>
-                                              </div>
-                                              <div class="col">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="donuttello discovery box">
-                                              </div>
-                                          </div>
+                                            <div class="text-line"> </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="text-line"> </div>
+                                                </div>
+                                                <div class="col-6"> 
+                                                    <div class="preloadimage"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col p-1">
+                                <div class="col-md-3 p-1">
                                     <div class="card shadow-sm">
                                         <div class="card-body">
-                                          <h5 class="card-title">Doosje van 6</h5>
-                                          <div class="row">
-                                              <div class="col">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 15,00</h6>
-                                              </div>
-                                              <div class="col">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="donuttello discovery box">
-                                              </div>
-                                          </div>
+                                            <div class="text-line"></div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="text-line"> </div>
+                                                </div>
+                                                <div class="col-6"> 
+                                                    <div class="preloadimage"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col p-1">
+                                <div class="col-md-3 p-1">
                                     <div class="card shadow-sm">
                                         <div class="card-body">
-                                          <h5 class="card-title">Doosje van 6</h5>
-                                          <div class="row">
-                                              <div class="col">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 15,00</h6>
-                                              </div>
-                                              <div class="col">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="donuttello discovery box">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Doosje van 6</h5>
-                                          <div class="row">
-                                              <div class="col">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 15,00</h6>
-                                              </div>
-                                              <div class="col">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="donuttello discovery box">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Doosje van 6</h5>
-                                          <div class="row">
-                                              <div class="col">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 15,00</h6>
-                                              </div>
-                                              <div class="col">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="donuttello discovery box">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Doosje van 6</h5>
-                                          <div class="row">
-                                              <div class="col">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 15,00</h6>
-                                              </div>
-                                              <div class="col">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="donuttello discovery box">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Doosje van 6</h5>
-                                          <div class="row">
-                                              <div class="col">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 15,00</h6>
-                                              </div>
-                                              <div class="col">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="donuttello discovery box">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Doosje van 6</h5>
-                                          <div class="row">
-                                              <div class="col">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 15,00</h6>
-                                              </div>
-                                              <div class="col">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="donuttello discovery box">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Doosje van 6</h5>
-                                          <div class="row">
-                                              <div class="col">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 15,00</h6>
-                                              </div>
-                                              <div class="col">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="donuttello discovery box">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Doosje van 6</h5>
-                                          <div class="row">
-                                              <div class="col">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 15,00</h6>
-                                              </div>
-                                              <div class="col">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="donuttello discovery box">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Doosje van 6</h5>
-                                          <div class="row">
-                                              <div class="col">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 15,00</h6>
-                                              </div>
-                                              <div class="col">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="donuttello discovery box">
-                                              </div>
-                                          </div>
+                                            <div class="text-line"> </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="text-line"> </div>
+                                                </div>
+                                                <div class="col-6"> 
+                                                    <div class="preloadimage"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -232,249 +108,63 @@
                         </div>
                         <div class="tab-pane fade" id="snoep" role="tabpanel" aria-labelledby="snoepTab">
                             <div class="row">
-                                <div class="col-3 p-1">
+                                <div class="col-md-3 p-1">
                                     <div class="card shadow-sm">
                                         <div class="card-body">
-                                          <h5 class="card-title">Gesuikerd Zoet</h5>
-                                          <div class="row">
-                                              <div class="col-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 5,95</h6>                                         
-                                              </div>
-                                              <div class="col-6">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/snoep-zuur-min.jpg')}}" class="img-fluid" alt="snoep-zuur">
-                                              </div>
-                                          </div>
+                                            <div class="text-line"> </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="text-line"> </div>
+                                                </div>
+                                                <div class="col-6"> 
+                                                    <div class="preloadimage"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-3 p-1">
+                                <div class="col-md-3 p-1">
                                     <div class="card shadow-sm">
                                         <div class="card-body">
-                                          <h5 class="card-title">Gesuikerd Zoet</h5>
-                                          <div class="row">
-                                              <div class="col-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 5,95</h6>                                         
-                                              </div>
-                                              <div class="col-6">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/snoep-zuur-min.jpg')}}" class="img-fluid" alt="snoep-zuur">
-                                              </div>
-                                          </div>
+                                            <div class="text-line"> </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="text-line"> </div>
+                                                </div>
+                                                <div class="col-6"> 
+                                                    <div class="preloadimage"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-3 p-1">
+                                <div class="col-md-3 p-1">
                                     <div class="card shadow-sm">
                                         <div class="card-body">
-                                          <h5 class="card-title">Gesuikerd Zoet</h5>
-                                          <div class="row">
-                                              <div class="col-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 5,95</h6>                                         
-                                              </div>
-                                              <div class="col-6">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/snoep-zuur-min.jpg')}}" class="img-fluid" alt="snoep-zuur">
-                                              </div>
-                                          </div>
+                                            <div class="text-line"></div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="text-line"> </div>
+                                                </div>
+                                                <div class="col-6"> 
+                                                    <div class="preloadimage"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-3 p-1">
+                                <div class="col-md-3 p-1">
                                     <div class="card shadow-sm">
                                         <div class="card-body">
-                                          <h5 class="card-title">Gesuikerd Zoet</h5>
-                                          <div class="row">
-                                              <div class="col-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 5,95</h6>                                         
-                                              </div>
-                                              <div class="col-6">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/snoep-zuur-min.jpg')}}" class="img-fluid" alt="snoep-zuur">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3 p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Gesuikerd Zoet</h5>
-                                          <div class="row">
-                                              <div class="col-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 5,95</h6>                                         
-                                              </div>
-                                              <div class="col-6">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/snoep-zuur-min.jpg')}}" class="img-fluid" alt="snoep-zuur">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-3 p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Gesuikerd Zoet</h5>
-                                          <div class="row">
-                                              <div class="col-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 5,95</h6>                                         
-                                              </div>
-                                              <div class="col-6">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/snoep-zuur-min.jpg')}}" class="img-fluid" alt="snoep-zuur">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-3 p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Gesuikerd Zoet</h5>
-                                          <div class="row">
-                                              <div class="col-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 5,95</h6>                                         
-                                              </div>
-                                              <div class="col-6">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/snoep-zuur-min.jpg')}}" class="img-fluid" alt="snoep-zuur">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-3 p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Gesuikerd Zoet</h5>
-                                          <div class="row">
-                                              <div class="col-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 5,95</h6>                                         
-                                              </div>
-                                              <div class="col-6">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/snoep-zuur-min.jpg')}}" class="img-fluid" alt="snoep-zuur">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3 p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Gesuikerd Zoet</h5>
-                                          <div class="row">
-                                              <div class="col-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 5,95</h6>                                         
-                                              </div>
-                                              <div class="col-6">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/snoep-zuur-min.jpg')}}" class="img-fluid" alt="snoep-zuur">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-3 p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Gesuikerd Zoet</h5>
-                                          <div class="row">
-                                              <div class="col-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 5,95</h6>                                         
-                                              </div>
-                                              <div class="col-6">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/snoep-zuur-min.jpg')}}" class="img-fluid" alt="snoep-zuur">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-3 p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Gesuikerd Zoet</h5>
-                                          <div class="row">
-                                              <div class="col-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 5,95</h6>                                         
-                                              </div>
-                                              <div class="col-6">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/snoep-zuur-min.jpg')}}" class="img-fluid" alt="snoep-zuur">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-3 p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Gesuikerd Zoet</h5>
-                                          <div class="row">
-                                              <div class="col-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 5,95</h6>                                         
-                                              </div>
-                                              <div class="col-6">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/snoep-zuur-min.jpg')}}" class="img-fluid" alt="snoep-zuur">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3 p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Gesuikerd Zoet</h5>
-                                          <div class="row">
-                                              <div class="col-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 5,95</h6>                                         
-                                              </div>
-                                              <div class="col-6">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/snoep-zuur-min.jpg')}}" class="img-fluid" alt="snoep-zuur">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-3 p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Gesuikerd Zoet</h5>
-                                          <div class="row">
-                                              <div class="col-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 5,95</h6>                                         
-                                              </div>
-                                              <div class="col-6">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/snoep-zuur-min.jpg')}}" class="img-fluid" alt="snoep-zuur">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-3 p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Gesuikerd Zoet</h5>
-                                          <div class="row">
-                                              <div class="col-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 5,95</h6>                                         
-                                              </div>
-                                              <div class="col-6">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/snoep-zuur-min.jpg')}}" class="img-fluid" alt="snoep-zuur">
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-3 p-1">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Gesuikerd Zoet</h5>
-                                          <div class="row">
-                                              <div class="col-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">€ 5,95</h6>                                         
-                                              </div>
-                                              <div class="col-6">
-                                                <img src="{{asset('chuckbe/chuckcms-module-pos/snoep-zuur-min.jpg')}}" class="img-fluid" alt="snoep-zuur">
-                                              </div>
-                                          </div>
+                                            <div class="text-line"> </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="text-line"> </div>
+                                                </div>
+                                                <div class="col-6"> 
+                                                    <div class="preloadimage"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

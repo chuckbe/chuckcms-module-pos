@@ -88,6 +88,59 @@ html, body, row {
     border-radius: 6px;
     border: 3px solid #f8f9fa;
 }
+.menuItemArea > div.container .tab-content {
+    width: 100%;
+}
+/* placeholder shimmer */
+@-webkit-keyframes placeHolderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+@keyframes placeHolderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+.animated-background, .preloadimage, .text-line {
+  -webkit-animation-duration: 1.25s;
+          animation-duration: 1.25s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  -webkit-animation-name: placeHolderShimmer;
+          animation-name: placeHolderShimmer;
+  -webkit-animation-timing-function: linear;
+          animation-timing-function: linear;
+  background: #F6F6F6;
+  background: -webkit-gradient(linear, left top, right top, color-stop(8%, #F6F6F6), color-stop(18%, #F0F0F0), color-stop(33%, #F6F6F6));
+  background: linear-gradient(to right, #F6F6F6 8%, #F0F0F0 18%, #F6F6F6 33%);
+  background-size: 800px 104px;
+  height: 96px;
+  position: relative;
+}
+
+.preloadimage {
+  height: 52px;
+  max-width: 100%;
+  margin: 6px 0;
+}
+
+.text-line {
+  height: 16px;
+  width: 100%;
+  margin: 4px 0;
+}
+/* placeholder shimmer ends */
+
 .menuItemArea .card-title {
     font-weight: 300;
 }
