@@ -244,16 +244,16 @@
             <div class="bestelTabArea row">
                 <div class="tab-content" id="bestelNavigationTabContent">
                     <div class="tab-pane fade show active" id="bestelcode0123"  role="tabpanel" aria-labelledby="bestelcode0123Tab">
-                        <div class="bestelOrder row align-items-center">
+                        {{-- <div class="bestelOrder row align-items-center">
                             <div class="col-5 bestelOrderDetails">
                                 <div class="col bestelOrderImg">
-                                    <div class="preloadimage"></div>
+                                    <div class="preloadimage"></div> --}}
                                     {{-- <img src="{{asset('chuckbe/chuckcms-module-pos/donuttello_discovery_box_1-01.jpg')}}" class="img-fluid" alt="orderImage"> --}}
-                                </div>
+                                {{-- </div>
                                 <div class="col bestelOrderTitle">
-                                    <div class="text-line"> </div>
+                                    <div class="text-line"> </div> --}}
                                     {{-- <span>Doosje van 6</span> --}}
-                                </div> 
+                                {{-- </div> 
                             </div>
                             <div class="col-4 bestelOrderQuantity">
                                 <div class="bestelOrderQuantityControl trash">
@@ -268,11 +268,11 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="col-3 bestelOrderPrice">
+                            <div class="col-3 bestelOrderPrice"> --}}
                               {{-- € 15,00 --}}
-                              <div class="text-line" style="width: 50%"> </div>
+                              {{-- <div class="text-line" style="width: 50%"> </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -334,6 +334,7 @@
 @endsection
 @section('scripts')
 <script>
+const cart = [];
 var GenRandom =  {
 	
     Stored: [],
@@ -484,8 +485,105 @@ $(document).ready(function(){
        var localParsed = JSON.parse(local);
        localParsed.products.forEach((product, productIndex)=> {
            if(product.id == id){
-               console.log(product.json.page_title.nl);
+               //console.log(product);
+               if(!$.isEmptyObject(product.json.combinations)){
+                   console.log("object is not empty")
+                   console.log(product.json.combinations);
+                   let $wrapper = $('.wrapper');
+                   let $modal = $(`<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                        <div class="modal-body">
+                                            ...
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>`)
+                   $wrapper.append($modal);
+                   $('#exampleModal').modal('show');
+               } else {
+                   let activeRekeningId = $("#bestelNavigationTabContent .tab-pane.active").attr('id');
+                   if(cart.length == 0) {
+                       cart.push({
+                           'rekening': activeRekeningId,
+                           'products': [{
+                               'productdata':   product,
+                               'quantity': 1
+                               }]
+                           });
+                   }else {
+                       cart.forEach(function(item) {
+                           if(item.rekening !== activeRekeningId){
+                               cart.push({
+                                   'rekening': activeRekeningId,
+                                   'products': [{
+                                        'productdata':   product,
+                                        'quantity': 1
+                                        }]
+                                   });
+                           }else {
+                               item.products.forEach(function (cartProduct) {
+                                   if(product.id == cartProduct.productdata.id){
+                                       //console.log('you are purchasing the same product')
+                                       cartProduct.quantity = cartProduct.quantity + 1;
+                                   } else {
+                                       item.products.push({
+                                        'productdata':   product,
+                                        'quantity': 1
+                                       });
+                                   }
+                               });
+                           }
+                        });
+                   }
+                   
+                   cart.forEach(function(item) {
+                        let rekening = item.rekening;
+                        item.products.forEach(function(product) {
+                            //console.log(product, product.quantity, rekening);
+                            let featured_img = '';
+                            for( let key in product.productdata.json.images) {
+                                if(product.productdata.json.images[key].is_featured === true) {
+                                    let url = window.location.protocol + "//" + location.host.split(":")[0];
+                                     featured_img = url+product.productdata.json.images[key].url.replace(" ","%20");
+                                }
+                            }
+                            let newOrder = $(`<div class="bestelOrder row align-items-center">
+                                        <div class="col-5 bestelOrderDetails">
+                                            <div class="col bestelOrderImg">
+                                                <img src="${featured_img}" class="img-fluid" alt="${product.productdata.json.title.nl}">
+                                            </div>
+                                            <div class="col bestelOrderTitle">
+                                                 <span>${product.productdata.json.title.nl}</span>
+                                            </div> 
+                                        </div>
+                                        <div class="col-4 bestelOrderQuantity">
+                                            <div class="bestelOrderQuantityControl trash">
+                                                <a href="#">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                            <input type="text" id="quantity" name="quantity" value="${product.quantity}">
+                                            <div class="bestelOrderQuantityControl">
+                                                <a href="#">
+                                                    <i class="fas fa-plus"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-3 bestelOrderPrice">
+                                         € ${parseFloat(product.productdata.json.price.final).toFixed(2).replace(".", ",")}
+                                        </div>
+                                    </div>`);
+                            $(`#bestelNavigationTabContent #${rekening}`).empty();         
+                            $(`#bestelNavigationTabContent #${rekening}`).append(newOrder);   
 
+                        });
+                    });
+               }
            }
        });
 
