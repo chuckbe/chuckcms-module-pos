@@ -480,7 +480,6 @@ $(document).ready(function(){
 
     // bestel cart area
     const addToCart = function(id) {
-       // console.log(`add ${id} to cart`);
        var local = localStorage.getItem('pos-products');
        var localParsed = JSON.parse(local);
        localParsed.products.forEach((product, productIndex)=> {
@@ -516,15 +515,35 @@ $(document).ready(function(){
                                }]
                            });
                    }else {
-                       cart.forEach(function(item) {
-                           if(item.rekening !== activeRekeningId){
-                               cart.push({
+                       const found = cart.some(el => el.rekening === activeRekeningId);
+                       if(!found){
+                           cart.push({
                                    'rekening': activeRekeningId,
                                    'products': [{
-                                        'productdata':   product,
+                                        'productdata': product,
                                         'quantity': 1
                                         }]
                                    });
+                       }else {
+                           cart.map(function(cartitem){
+                               const findProduct = cartitem.products.some(el => el.productdata.id === product.id);
+                               if(!findProduct){
+                                   cartitem.products.push({
+                                       'productdata': product,
+                                        'quantity': 1
+                                   })
+                               }else {
+                                   cartitem.products.map(function(productincart) {
+                                       if(productincart.productdata.id === product.id) {
+                                           productincart.quantity = productincart.quantity + 1;
+                                       }
+                                   });
+                               }
+                           });
+                       }
+                       /*cart.forEach(function(item) {
+                           if(item.rekening !== activeRekeningId){
+                               
                            }else {
                                item.products.forEach(function (cartProduct) {
                                    if(product.id == cartProduct.productdata.id){
@@ -538,15 +557,14 @@ $(document).ready(function(){
                                    }
                                });
                            }
-                        });
+                        });*/
                    }
-                   
-                   cart.forEach(function(item) {
-                        let rekening = item.rekening;
-                        item.products.forEach(function(product) {
-                            //console.log(product, product.quantity, rekening);
-                            let featured_img = '';
-                            for( let key in product.productdata.json.images) {
+                   cart.map(function(item){
+                       let bestelPane = $(`#bestelNavigationTabContent #${item.rekening}`);
+                       bestelPane.empty();
+                       item.products.map(function(product) {
+                           let featured_img = '';
+                           for( let key in product.productdata.json.images) {
                                 if(product.productdata.json.images[key].is_featured === true) {
                                     let url = window.location.protocol + "//" + location.host.split(":")[0];
                                      featured_img = url+product.productdata.json.images[key].url.replace(" ","%20");
@@ -578,11 +596,11 @@ $(document).ready(function(){
                                          € ${parseFloat(product.productdata.json.price.final).toFixed(2).replace(".", ",")}
                                         </div>
                                     </div>`);
-                            $(`#bestelNavigationTabContent #${rekening}`).empty();         
-                            $(`#bestelNavigationTabContent #${rekening}`).append(newOrder);   
-
-                        });
-                    });
+                            bestelPane.append(newOrder);
+                       });
+                       
+                       console.log(item);
+                   });
                }
            }
        });
