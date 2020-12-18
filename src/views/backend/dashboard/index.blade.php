@@ -220,7 +220,7 @@
                     <h4 class="bestelHeaderTitle">Bestelling</h4>
                 </div>
                 <div class="col-6 text-right bestelHeaderInstellingen h-100">
-                    <button type="button" class="btn shadow-sm">Verwijder alles</button>
+                    <button type="button" class="btn shadow-sm deletealles">Verwijder alles</button>
                     <button type="button" class="btn shadow-sm"><i class="fas fa-cog"></i></button>
                 </div>
             </div>
@@ -718,6 +718,23 @@ $(document).ready(function(){
             localStorage.setItem('cart', JSON.stringify(cart));
         });
     });
+
+    // delete all btn
+    $(document).on('click', '.bestelHeaderInstellingen .deletealles', function(event){
+        $('#bestelNavigationTab').children().each(function () {
+            if(this.getAttribute('data-toggle') == 'tab'){
+                let id = this.getAttribute('data-bestel-id');
+                let tabpane = $(`#bestelNavigationTabContent .tab-pane[data-bestel-id=${id}]`);
+                //console.log(tabpane, this);
+                tabpane.remove();
+                this.remove(); 
+                cart = []
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+        });;
+        
+    });
+
 
     // bestel cart area ends
 });
