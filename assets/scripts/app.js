@@ -47,7 +47,9 @@ if (localStorage.getItem("cart") !== null) {
                     </div>
                     <div class="col-4 bestelOrderQuantity">
                         <div class="bestelOrderQuantityControl trash">
-                            <div class="deletebtn"><i class="fas fa-trash"></i></div>
+                            <div class="deletebtn">
+                                ${(product.quantity > 1) ? '<i class="fas fa-minus"></i>': '<i class="fas fa-trash"></i>'}
+                            </div>
                         </div>
                         <input type="text" id="quantity_product${product.productData.id}" name="quantity" value="${product.quantity}">
                         <div class="bestelOrderQuantityControl">
@@ -326,7 +328,9 @@ $(document).ready(function(){
                                 </div>
                                 <div class="col-4 bestelOrderQuantity">
                                     <div class="bestelOrderQuantityControl trash">
-                                        <div class="deletebtn"><i class="fas fa-trash"></i></div>
+                                        <div class="deletebtn">
+                                            ${(product.quantity > 1) ? '<i class="fas fa-minus"></i>': '<i class="fas fa-trash"></i>'}
+                                        </div>
                                     </div>
                                     <input type="text" id="quantity_product${product.productData.id}" name="quantity" value="${product.quantity}">
                                     <div class="bestelOrderQuantityControl">
@@ -351,7 +355,13 @@ $(document).ready(function(){
         let orderId = $(tab).attr('id');
         let productrow = $(this).parents()[2];
         let productId = $(productrow).attr('data-product-id');
-        //let bestelOrderQuantity = $(this).parent().siblings('input#quantity').val();
+        let bestelOrderQuantity = $(this).parent().siblings('input#quantity').val();
+        console.log(bestelOrderQuantity);
+        if(bestelOrderQuantity == 1){
+            console.log('one left');
+            let deletebtn = $(productrow).children('.bestelOrderQuantityControl .deletebtn');
+            deletebtn.html('<i class="fas fa-trash"></i>')
+        }
         cart.forEach((cartItem)=>{
             if(orderId == cartItem.rekening){
                 cartItem.state = 'active';

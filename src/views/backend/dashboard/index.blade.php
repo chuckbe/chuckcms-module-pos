@@ -298,8 +298,8 @@
     </div>
 @endsection
 @section('scripts')
-<script src="{{asset('chuckbe/chuckcms-module-pos/scripts/app.js')}}"></script>
-{{-- <script>
+{{-- <script src="{{asset('chuckbe/chuckcms-module-pos/scripts/app.js')}}"></script> --}}
+<script>
 let online = true;
 setInterval(function(){
     let img = new Image();
@@ -349,7 +349,9 @@ if (localStorage.getItem("cart") !== null) {
                     </div>
                     <div class="col-4 bestelOrderQuantity">
                         <div class="bestelOrderQuantityControl trash">
-                            <div class="deletebtn"><i class="fas fa-trash"></i></div>
+                            <div class="deletebtn">
+                                ${(product.quantity > 1) ? '<i class="fas fa-minus"></i>': '<i class="fas fa-trash"></i>'}
+                            </div>
                         </div>
                         <input type="text" id="quantity_product${product.productData.id}" name="quantity" value="${product.quantity}">
                         <div class="bestelOrderQuantityControl">
@@ -357,11 +359,11 @@ if (localStorage.getItem("cart") !== null) {
                         </div>
                     </div>
                     <div class="col-3 bestelOrderPrice">
-                        € ${parseFloat(product.productData.json.price.final).toFixed(2).replace(".", ",")}
+                        € ${parseFloat(product.productData.json.price.final * product.quantity).toFixed(2).replace(".", ",")}
                     </div>
                 </div>
             `);
-            console.log(parseFloat(product.productData.json.price.final).toFixed(2)) * product.quantity);
+            console.log(parseFloat(product.productData.json.price.final * product.quantity).toFixed(2).replace(".", ","));
             bestelPane.append(newOrder);
         });
       }
@@ -628,7 +630,9 @@ $(document).ready(function(){
                                 </div>
                                 <div class="col-4 bestelOrderQuantity">
                                     <div class="bestelOrderQuantityControl trash">
-                                        <div class="deletebtn"><i class="fas fa-trash"></i></div>
+                                        <div class="deletebtn">
+                                            ${(product.quantity > 1) ? '<i class="fas fa-minus"></i>': '<i class="fas fa-trash"></i>'}
+                                        </div>
                                     </div>
                                     <input type="text" id="quantity_product${product.productData.id}" name="quantity" value="${product.quantity}">
                                     <div class="bestelOrderQuantityControl">
@@ -636,7 +640,7 @@ $(document).ready(function(){
                                     </div>
                                 </div>
                                 <div class="col-3 bestelOrderPrice">
-                                    € ${parseFloat(product.productData.json.price.final).toFixed(2).replace(".", ",")}
+                                    € ${parseFloat(product.productData.json.price.final * product.quantity).toFixed(2).replace(".", ",")}
                                 </div>
                             </div>
                         `);
@@ -653,7 +657,12 @@ $(document).ready(function(){
         let orderId = $(tab).attr('id');
         let productrow = $(this).parents()[2];
         let productId = $(productrow).attr('data-product-id');
-        //let bestelOrderQuantity = $(this).parent().siblings('input#quantity').val();
+        let bestelOrderQuantity = $(this).parent().siblings('input').val();
+        //console.log(bestelOrderQuantity);
+        if(bestelOrderQuantity <= 2){
+            let deletebtn = $(this);
+            deletebtn.html('<i class="fas fa-trash"></i>')
+        }
         cart.forEach((cartItem)=>{
             if(orderId == cartItem.rekening){
                 cartItem.state = 'active';
@@ -665,6 +674,8 @@ $(document).ready(function(){
                             product.quantity = product.quantity - 1;
                             localStorage.setItem('cart', JSON.stringify(cart));
                             $(this).parent().siblings(`input#quantity_product${product.productData.id}`).val(product.quantity);
+                            let pricecontainer = $(productrow).children('.bestelOrderPrice');
+                            pricecontainer.text(`€ ${parseFloat(product.productData.json.price.final * product.quantity).toFixed(2).replace(".", ",")}`);
                         } else{
                             if(confirm("Are you sure you want to delete this?")){
                                 cartItem.products = jQuery.grep(cartItem.products, function(value) {
@@ -697,6 +708,8 @@ $(document).ready(function(){
                         product.quantity = product.quantity + 1;
                         localStorage.setItem('cart', JSON.stringify(cart));
                         $(this).parent().siblings(`input#quantity_product${product.productData.id}`).val(product.quantity);
+                        let pricecontainer = $(productrow).children('.bestelOrderPrice');
+                        pricecontainer.text(`€ ${parseFloat(product.productData.json.price.final * product.quantity).toFixed(2).replace(".", ",")}`);
                     }
                 });
             } else {
@@ -708,5 +721,5 @@ $(document).ready(function(){
 
     // bestel cart area ends
 });
-</script> --}}
+</script>
 @endsection
