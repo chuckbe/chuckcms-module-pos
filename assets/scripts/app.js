@@ -51,14 +51,15 @@ if (localStorage.getItem("cart") !== null) {
                         </div>
                         <input type="text" id="quantity_product${product.productData.id}" name="quantity" value="${product.quantity}">
                         <div class="bestelOrderQuantityControl">
-                            <a href="#"><i class="fas fa-plus"></i></a>
+                            <div class="addbtn"><i class="fas fa-plus"></i></div>
                         </div>
                     </div>
                     <div class="col-3 bestelOrderPrice">
-                        € ${parseFloat(product.productData.json.price.final).toFixed(2).replace(".", ",")}
+                        € ${parseFloat(product.productData.json.price.final * product.quantity).toFixed(2).replace(".", ",")}
                     </div>
                 </div>
             `);
+            console.log(parseFloat(product.productData.json.price.final * product.quantity).toFixed(2).replace(".", ","));
             bestelPane.append(newOrder);
         });
       }
@@ -244,6 +245,22 @@ $(document).ready(function(){
             if(product.id == id){
                 if(!$.isEmptyObject(product.json.combinations)){
                     console.log("product with combination");
+                    let $wrapper = $('.wrapper');
+                    let $modal = $(`<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    ...
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`);
+                    $wrapper.append($modal);
+                    $('#exampleModal').modal('show');
                 }else{
                     let activeRekeningId = $("#bestelNavigationTabContent .tab-pane.active").attr('data-bestel-id');
                     cart.forEach((cartItem)=>{
@@ -313,11 +330,11 @@ $(document).ready(function(){
                                     </div>
                                     <input type="text" id="quantity_product${product.productData.id}" name="quantity" value="${product.quantity}">
                                     <div class="bestelOrderQuantityControl">
-                                        <a href="#"><i class="fas fa-plus"></i></a>
+                                        <div class="addbtn"><i class="fas fa-plus"></i></div>
                                     </div>
                                 </div>
                                 <div class="col-3 bestelOrderPrice">
-                                    € ${parseFloat(product.productData.json.price.final).toFixed(2).replace(".", ",")}
+                                    € ${parseFloat(product.productData.json.price.final * product.quantity).toFixed(2).replace(".", ",")}
                                 </div>
                             </div>
                         `);
@@ -327,131 +344,14 @@ $(document).ready(function(){
             }
 
         });
-        /*localParsed.products.forEach((product, productIndex)=> {
-            if(product.id == id){
-                if(!$.isEmptyObject(product.json.combinations)){
-                    console.log("object is not empty")
-                    console.log(product.json.combinations);
-                    let $wrapper = $('.wrapper');
-                    let $modal = $(`<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-body">
-                                                    ...
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>`);
-                    $wrapper.append($modal);
-                    $('#exampleModal').modal('show');
-                } else {
-                    let activeRekeningId = $("#bestelNavigationTabContent .tab-pane.active").attr('data-bestel-id');
-                    if(cart.length === 0){
-                        console.log('add to cart');
-                        console.log(cart);
-                        /*cart.push({
-                            'rekening': activeRekeningId,
-                            ''
-                            'products': [{
-                                'productdata': product,
-                                'quantity': 1
-                            }]
-                        });
-                        localStorage.setItem('cart', JSON.stringify(cart));
-                    }else {
-                        /*let isCartAvailable = cart.some(el => el.rekening === activeRekeningId);
-                        if(isCartAvailable){
-                            cart.forEach((cartItem, cartIndex)=>{
-                                if(cartItem.rekening === activeRekeningId){
-                                    let isProductPresent = cartItem.products.some(el => el.productdata.id === product.id);
-                                    if(isProductPresent) {
-                                        cartItem.products.forEach((cartproduct, cartproductindex)=>{
-                                            if(cartproduct.productdata.id === id){
-                                                cartproduct.quantity = cartproduct.quantity+1;
-                                                localStorage.setItem('cart', JSON.stringify(cart));
-                                            }
-                                        });
-                                    }else {
-                                        cartItem.products.push({
-                                            'productdata': product,
-                                            'quantity': 1
-                                        });
-                                        localStorage.setItem('cart', JSON.stringify(cart));
-                                    }
-                                }
-                            });
-                        }else {
-                           // creates a new rekening in cart arrray
-                           cart.push({
-                               'rekening': activeRekeningId,
-                               'products': [{
-                                   'productdata': product,
-                                   'quantity': 1
-                                   }]
-                           });
-                           localStorage.setItem('cart', JSON.stringify(cart));
-                        }
-                    }
-                }
-            }
-        });
-        /*cart.forEach((cartItem, cartIndex)=>{
-            let bestelPane = $('#bestelNavigationTabContent').find(`[data-bestel-id='${cartItem.rekening}']`);
-            if(bestelPane.hasClass('active')){
-                if(bestelPane.attr("data-bestel-id") == cartItem.rekening) {
-                    bestelPane.empty();
-                    cartItem.products.map(function(product) {
-                        let featured_img = '';
-                        for( let key in product.productdata.json.images) {
-                            if(product.productdata.json.images[key].is_featured === true) {
-                                let url = window.location.protocol + "//" + location.host.split(":")[0];
-                                featured_img = url+product.productdata.json.images[key].url.replace(" ","%20");
-                            }
-                        }
-                        let newOrder = 
-                        $(`
-                            <div class="bestelOrder row align-items-center" data-product-id=${product.productdata.id}>
-                                <div class="col-5 bestelOrderDetails">
-                                    <div class="col bestelOrderImg">
-                                        <img src="${featured_img}" class="img-fluid" alt="${product.productdata.json.title.nl}">
-                                    </div>
-                                    <div class="col bestelOrderTitle">
-                                        <span>${product.productdata.json.title.nl}</span>
-                                    </div> 
-                                </div>
-                                <div class="col-4 bestelOrderQuantity">
-                                    <div class="bestelOrderQuantityControl trash">
-                                        <div class="deletebtn"><i class="fas fa-trash"></i></div>
-                                    </div>
-                                    <input type="text" id="quantity_product${product.productdata.id}" name="quantity" value="${product.quantity}">
-                                    <div class="bestelOrderQuantityControl">
-                                        <a href="#"><i class="fas fa-plus"></i></a>
-                                    </div>
-                                </div>
-                                <div class="col-3 bestelOrderPrice">
-                                    € ${parseFloat(product.productdata.json.price.final).toFixed(2).replace(".", ",")}
-                                </div>
-                            </div>
-                        `);
-                        bestelPane.append(newOrder);
-                    });
-                }
-            }
-        });
-        //console.log(JSON.parse(localStorage.getItem('cart')));
-        //console.log(localParsed);*/
     }
-
+    //delete btn below
     $(document).on('click', '.bestelOrderQuantityControl .deletebtn', function(event) {
         let tab = $(this).parents()[3];
         let orderId = $(tab).attr('id');
         let productrow = $(this).parents()[2];
         let productId = $(productrow).attr('data-product-id');
-        let bestelOrderQuantity = $(this).parent().siblings('input#quantity').val();
+        //let bestelOrderQuantity = $(this).parent().siblings('input#quantity').val();
         cart.forEach((cartItem)=>{
             if(orderId == cartItem.rekening){
                 cartItem.state = 'active';
@@ -463,6 +363,8 @@ $(document).ready(function(){
                             product.quantity = product.quantity - 1;
                             localStorage.setItem('cart', JSON.stringify(cart));
                             $(this).parent().siblings(`input#quantity_product${product.productData.id}`).val(product.quantity);
+                            let pricecontainer = $(productrow).children('.bestelOrderPrice');
+                            pricecontainer.text(`€ ${parseFloat(product.productData.json.price.final * product.quantity).toFixed(2).replace(".", ",")}`);
                         } else{
                             if(confirm("Are you sure you want to delete this?")){
                                 cartItem.products = jQuery.grep(cartItem.products, function(value) {
@@ -481,36 +383,30 @@ $(document).ready(function(){
         });
     });
 
-
-    //delete btn below
-    /*$(document).on('click', '.bestelOrderQuantityControl .deletebtn', function(event) {
+    //add btn below
+    $(document).on('click', '.bestelOrderQuantityControl .addbtn', function(event){
         let tab = $(this).parents()[3];
         let orderId = $(tab).attr('id');
         let productrow = $(this).parents()[2];
         let productId = $(productrow).attr('data-product-id');
-        let bestelOrderQuantity = $(this).parent().siblings('input#quantity').val();
-        for(let i= 0 ; i <= cart.length; i++){
-
-        }
-        /*cart.forEach((cartItem, cartIndex)=>{
-            if(orderId == cartItem.rekening){ 
-                cartItem.products.forEach((product, productIndex)=>{
-                    if(product.productdata.id == productId){
-                        if(product.quantity > 1){
-                            product.quantity = product.quantity - 1;
-                            $(this).parent().siblings(`input#quantity_product${product.productdata.id}`).val(product.quantity);
-                        } else {
-                            if(confirm("Are you sure you want to delete this?")){
-                                cartItem.products = jQuery.grep(cartItem.products, function(value) {
-                                    return value != product;
-                                });
-                                ($(this).parents()[2]).remove();
-                            }
-                        }
+        cart.forEach((cartItem)=>{
+            if(orderId == cartItem.rekening){
+                cartItem.state = 'active';
+                cartItem.products.forEach((product)=>{
+                    if(product.productData.id == productId){
+                        product.quantity = product.quantity + 1;
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                        $(this).parent().siblings(`input#quantity_product${product.productData.id}`).val(product.quantity);
+                        let pricecontainer = $(productrow).children('.bestelOrderPrice');
+                        pricecontainer.text(`€ ${parseFloat(product.productData.json.price.final * product.quantity).toFixed(2).replace(".", ",")}`);
                     }
                 });
+            } else {
+                cartItem.state = 'inactive';
             }
-        });*/
-   // });*/
+            localStorage.setItem('cart', JSON.stringify(cart));
+        });
+    });
+
     // bestel cart area ends
 });

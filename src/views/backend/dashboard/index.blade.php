@@ -313,7 +313,7 @@ if (localStorage.getItem("cart") !== null) {
   let storedCart = JSON.parse(localStorage.getItem('cart'));
   cart = storedCart;
   console.log(storedCart);
-  storedCart.forEach((billItem, billIndex)=> {
+  storedCart.forEach((billItem)=> {
       let bestelNavigation = $('#bestelNavigationTab');
       let $tab = $(`<a class="flex-sm-fill text-sm-center nav-link" id="bestelNavigation${billItem.rekening}Tab" href="#${billItem.rekening}" role="tab" data-toggle="tab" aria-controls="${billItem.rekening}Tab" aria-selected="true" data-bestel-id="${billItem.rekening}"><span>bestelcode: #${(billItem.rekening).match(/\d/g).join("")}</span><span class="remove-tab"><i class="fas fa-times-circle"></i></span></a>`);
       let $tabPane = $(`<div class="tab-pane fade show" id="${billItem.rekening}"  role="tabpanel" aria-labelledby="${billItem.rekening}Tab" data-bestel-id="${billItem.rekening}"></div>`)  
@@ -325,7 +325,48 @@ if (localStorage.getItem("cart") !== null) {
       }
       $('#bestelNavigationTab #bestelNavigationnNieuweBestellingTab').after($tab);
       $('#bestelNavigationTabContent').prepend($tabPane);
+      let bestelPane = $('#bestelNavigationTabContent').find(`[data-bestel-id='${billItem.rekening}']`);
+      if(bestelPane.attr("data-bestel-id") == billItem.rekening) {
+        bestelPane.empty();
+        billItem.products.map(function(product) {
+            let featured_img = '';
+            for( let key in product.productData.json.images) {
+                if(product.productData.json.images[key].is_featured === true) {
+                    let url = window.location.protocol + "//" + location.host.split(":")[0];
+                    featured_img = url+product.productData.json.images[key].url.replace(" ","%20");
+                }
+            }
+            let newOrder = 
+            $(`
+                <div class="bestelOrder row align-items-center" data-product-id=${product.productData.id}>
+                    <div class="col-5 bestelOrderDetails">
+                        <div class="col bestelOrderImg">
+                            <img src="${featured_img}" class="img-fluid" alt="${product.productData.json.title.nl}">
+                        </div>
+                        <div class="col bestelOrderTitle">
+                            <span>${product.productData.json.title.nl}</span>
+                        </div> 
+                    </div>
+                    <div class="col-4 bestelOrderQuantity">
+                        <div class="bestelOrderQuantityControl trash">
+                            <div class="deletebtn"><i class="fas fa-trash"></i></div>
+                        </div>
+                        <input type="text" id="quantity_product${product.productData.id}" name="quantity" value="${product.quantity}">
+                        <div class="bestelOrderQuantityControl">
+                            <div class="addbtn"><i class="fas fa-plus"></i></div>
+                        </div>
+                    </div>
+                    <div class="col-3 bestelOrderPrice">
+                        € ${parseFloat(product.productData.json.price.final).toFixed(2).replace(".", ",")}
+                    </div>
+                </div>
+            `);
+            console.log(parseFloat(product.productData.json.price.final).toFixed(2)) * product.quantity);
+            bestelPane.append(newOrder);
+        });
+      }
   });
+
 }
 let GenRandom =  {
     Stored: [],
@@ -383,7 +424,7 @@ $(document).ready(function(){
                     let $tabpanel = $(`<div class="tab-pane fade show ${categoryIndex == 0 ? 'active' : ''}" id="${category.json.name.toLowerCase()}" role="tabpanel" aria-labelledby="${category.json.name.toLowerCase()}Tab"></div>`);
                     $('#navigationTabContent').append($tabpanel);
                     $(`.tab-pane#${category.json.name.toLowerCase()}`).append(`<div class="row" id="row${category.json.name.toLowerCase()}"></div>`);
-                    parsedObject.products.forEach((product, productIndex)=> {
+                    parsedObject.products.forEach((product)=> {
                         if(product.json.collection == category.id) {
                             let featured_img = '';
                             for (let key in product.json.images) { 
@@ -468,10 +509,20 @@ $(document).ready(function(){
         let $tab = $(this).parent();
         let tabpaneid = $($tab).prop('href').split('#')[1];
         let $nextTab = $tab.next('.nav-link');
-        let $nextTabPane = $(`#bestelNavigationTabContent #${tabpaneid}`).next('.tab-pane');
-        $nextTab.addClass("active");
         let activeBestelId = $nextTab.attr('data-bestel-id');
-        $nextTabPane.addClass("active");
+        if($nextTab.length == 0){
+            let $prevTab = $tab.prev('.nav-link');
+            let $prevTabPane = $(`#bestelNavigationTabContent #${tabpaneid}`).prev('.tab-pane');
+            if($prevTab.attr('data-target') != 'nieuweBestelling'){
+                $prevTab.addClass("active");
+                $prevTabPane.addClass("active");
+
+            }
+        }else {
+            let $nextTabPane = $(`#bestelNavigationTabContent #${tabpaneid}`).next('.tab-pane');
+            $nextTab.addClass("active");
+            $nextTabPane.addClass("active");
+        }
         $(`#bestelNavigationTabContent #${tabpaneid}`).remove();
         $($tab).remove();
         for (i = 0; i < cart.length; i++) {
@@ -492,41 +543,10 @@ $(document).ready(function(){
     let localParsed = JSON.parse(local);
     // add to cart btn on tapping the product
     const addToCart = function(id) {
-        console.log('clicked: ',id);
-        localParsed.products.forEach((product, productIndex)=> {
+        localParsed.products.forEach((product)=> {
             if(product.id == id){
                 if(!$.isEmptyObject(product.json.combinations)){
                     console.log("product with combination");
-                }else{
-                    let activeRekeningId = $("#bestelNavigationTabContent .tab-pane.active").attr('data-bestel-id');
-                    cart.forEach((cartItem, cartIndex)=>{
-                        if(cartItem.rekening == activeRekeningId){
-                            if(cartItem.products.length === 0){
-                                cartItem.products.push({
-                                    'productData': product,
-                                    'quantity': 1
-                                });
-                                localStorage.setItem('cart', JSON.stringify(cart));
-                            }else {
-                                let isProductPresent = cartItem.products.some(el => el.productdata.id === id);
-                                if(isProductPresent){
-                                    console.log('product already present')
-                                }else{
-                                    console.log('add new product')
-                                }
-                                
-                            }
-                        }
-                    });
-                    console.log(cart);
-                }
-            }
-        });
-        /*localParsed.products.forEach((product, productIndex)=> {
-            if(product.id == id){
-                if(!$.isEmptyObject(product.json.combinations)){
-                    console.log("object is not empty")
-                    console.log(product.json.combinations);
                     let $wrapper = $('.wrapper');
                     let $modal = $(`<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
@@ -543,92 +563,80 @@ $(document).ready(function(){
                                     </div>`);
                     $wrapper.append($modal);
                     $('#exampleModal').modal('show');
-                } else {
+                }else{
                     let activeRekeningId = $("#bestelNavigationTabContent .tab-pane.active").attr('data-bestel-id');
-                    if(cart.length === 0){
-                        console.log('add to cart');
-                        console.log(cart);
-                        /*cart.push({
-                            'rekening': activeRekeningId,
-                            ''
-                            'products': [{
-                                'productdata': product,
-                                'quantity': 1
-                            }]
-                        });
-                        localStorage.setItem('cart', JSON.stringify(cart));
-                    }else {
-                        /*let isCartAvailable = cart.some(el => el.rekening === activeRekeningId);
-                        if(isCartAvailable){
-                            cart.forEach((cartItem, cartIndex)=>{
-                                if(cartItem.rekening === activeRekeningId){
-                                    let isProductPresent = cartItem.products.some(el => el.productdata.id === product.id);
-                                    if(isProductPresent) {
-                                        cartItem.products.forEach((cartproduct, cartproductindex)=>{
-                                            if(cartproduct.productdata.id === id){
-                                                cartproduct.quantity = cartproduct.quantity+1;
-                                                localStorage.setItem('cart', JSON.stringify(cart));
-                                            }
-                                        });
-                                    }else {
-                                        cartItem.products.push({
-                                            'productdata': product,
-                                            'quantity': 1
-                                        });
-                                        localStorage.setItem('cart', JSON.stringify(cart));
-                                    }
+                    cart.forEach((cartItem)=>{
+                        if(cartItem.rekening == activeRekeningId){
+                            cartItem.state = 'active';
+                            if(cartItem.products.length === 0){
+                                cartItem.products.push({
+                                    'productData': product,
+                                    'quantity': 1
+                                });
+                                localStorage.setItem('cart', JSON.stringify(cart));
+                            }else {
+                                let isProductPresent = cartItem.products.some(el => el.productData.id === id);
+                                if(isProductPresent){
+                                    cartItem.products.forEach((cartproduct)=>{
+                                        if(cartproduct.productData.id === id){
+                                            cartproduct.quantity = cartproduct.quantity+1;
+                                            localStorage.setItem('cart', JSON.stringify(cart));
+                                        }
+                                    });
+                                }else{
+                                    cartItem.products.push({
+                                        'productData': product,
+                                        'quantity': 1
+                                    });
+                                    localStorage.setItem('cart', JSON.stringify(cart));
                                 }
-                            });
-                        }else {
-                           // creates a new rekening in cart arrray
-                           cart.push({
-                               'rekening': activeRekeningId,
-                               'products': [{
-                                   'productdata': product,
-                                   'quantity': 1
-                                   }]
-                           });
-                           localStorage.setItem('cart', JSON.stringify(cart));
+                                
+                            }
+                            localStorage.setItem('cart', JSON.stringify(cart));
+                        }else{
+                            cartItem.state = 'inactive';
+                            localStorage.setItem('cart', JSON.stringify(cart));
                         }
-                    }
+                        
+                    });
                 }
             }
         });
-        /*cart.forEach((cartItem, cartIndex)=>{
+        cart.forEach( cartItem=>{
             let bestelPane = $('#bestelNavigationTabContent').find(`[data-bestel-id='${cartItem.rekening}']`);
             if(bestelPane.hasClass('active')){
                 if(bestelPane.attr("data-bestel-id") == cartItem.rekening) {
                     bestelPane.empty();
                     cartItem.products.map(function(product) {
                         let featured_img = '';
-                        for( let key in product.productdata.json.images) {
-                            if(product.productdata.json.images[key].is_featured === true) {
+                        for( let key in product.productData.json.images) {
+                            if(product.productData.json.images[key].is_featured === true) {
                                 let url = window.location.protocol + "//" + location.host.split(":")[0];
-                                featured_img = url+product.productdata.json.images[key].url.replace(" ","%20");
+                                featured_img = url+product.productData.json.images[key].url.replace(" ","%20");
                             }
                         }
                         let newOrder = 
                         $(`
-                            <div class="bestelOrder row align-items-center" data-product-id=${product.productdata.id}>
+                            <div class="bestelOrder row align-items-center" data-product-id=${product.productData.id}>
                                 <div class="col-5 bestelOrderDetails">
                                     <div class="col bestelOrderImg">
-                                        <img src="${featured_img}" class="img-fluid" alt="${product.productdata.json.title.nl}">
+                                        <img src="${featured_img}" class="img-fluid" alt="${product.productData.json.title.nl}">
                                     </div>
                                     <div class="col bestelOrderTitle">
-                                        <span>${product.productdata.json.title.nl}</span>
+                                        <span>${product.productData.json.title.nl}</span>
                                     </div> 
                                 </div>
                                 <div class="col-4 bestelOrderQuantity">
                                     <div class="bestelOrderQuantityControl trash">
                                         <div class="deletebtn"><i class="fas fa-trash"></i></div>
                                     </div>
-                                    <input type="text" id="quantity_product${product.productdata.id}" name="quantity" value="${product.quantity}">
+                                    <input type="text" id="quantity_product${product.productData.id}" name="quantity" value="${product.quantity}">
                                     <div class="bestelOrderQuantityControl">
-                                        <a href="#"><i class="fas fa-plus"></i></a>
+                                        <div class="addbtn"><i class="fas fa-plus"></i></div>
                                     </div>
                                 </div>
                                 <div class="col-3 bestelOrderPrice">
-                                    € ${parseFloat(product.productdata.json.price.final).toFixed(2).replace(".", ",")}
+                                    € ${parseFloat(product.productData.json.price.final).toFixed(2).replace(".", ",")}
                                 </div>
                             </div>
                         `);
@@ -636,41 +644,68 @@ $(document).ready(function(){
                     });
                 }
             }
-        });
-        //console.log(JSON.parse(localStorage.getItem('cart')));
-        //console.log(localParsed);*/
-    }
 
+        });
+    }
     //delete btn below
-    /*$(document).on('click', '.bestelOrderQuantityControl .deletebtn', function(event) {
+    $(document).on('click', '.bestelOrderQuantityControl .deletebtn', function(event) {
         let tab = $(this).parents()[3];
         let orderId = $(tab).attr('id');
         let productrow = $(this).parents()[2];
         let productId = $(productrow).attr('data-product-id');
-        let bestelOrderQuantity = $(this).parent().siblings('input#quantity').val();
-        for(let i= 0 ; i <= cart.length; i++){
-
-        }
-        /*cart.forEach((cartItem, cartIndex)=>{
-            if(orderId == cartItem.rekening){ 
-                cartItem.products.forEach((product, productIndex)=>{
-                    if(product.productdata.id == productId){
+        //let bestelOrderQuantity = $(this).parent().siblings('input#quantity').val();
+        cart.forEach((cartItem)=>{
+            if(orderId == cartItem.rekening){
+                cartItem.state = 'active';
+                //console.log("delete this item: ",cartItem);
+                cartItem.products.forEach((product)=>{
+                    if(product.productData.id == productId){
+                        //console.log("delete this item: ", product);
                         if(product.quantity > 1){
                             product.quantity = product.quantity - 1;
-                            $(this).parent().siblings(`input#quantity_product${product.productdata.id}`).val(product.quantity);
-                        } else {
+                            localStorage.setItem('cart', JSON.stringify(cart));
+                            $(this).parent().siblings(`input#quantity_product${product.productData.id}`).val(product.quantity);
+                        } else{
                             if(confirm("Are you sure you want to delete this?")){
                                 cartItem.products = jQuery.grep(cartItem.products, function(value) {
                                     return value != product;
                                 });
                                 ($(this).parents()[2]).remove();
+                                localStorage.setItem('cart', JSON.stringify(cart));
                             }
                         }
                     }
                 });
+            }else{
+                cartItem.state = 'inactive';
             }
-        });*/
-   // });*/
+            localStorage.setItem('cart', JSON.stringify(cart));
+        });
+    });
+
+    //add btn below
+    $(document).on('click', '.bestelOrderQuantityControl .addbtn', function(event){
+        let tab = $(this).parents()[3];
+        let orderId = $(tab).attr('id');
+        let productrow = $(this).parents()[2];
+        let productId = $(productrow).attr('data-product-id');
+        cart.forEach((cartItem)=>{
+            if(orderId == cartItem.rekening){
+                cartItem.state = 'active';
+                cartItem.products.forEach((product)=>{
+                    if(product.productData.id == productId){
+                        product.quantity = product.quantity + 1;
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                        $(this).parent().siblings(`input#quantity_product${product.productData.id}`).val(product.quantity);
+                    }
+                });
+            } else {
+                cartItem.state = 'inactive';
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+        });
+    });
+
     // bestel cart area ends
 });
 </script> --}}
