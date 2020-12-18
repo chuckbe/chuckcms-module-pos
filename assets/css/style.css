@@ -17,12 +17,13 @@ html, body, row {
 .header {
     background-color: #83D1E5;
     width: 100%;
-    height: 10vh;
+    padding: 1rem 0;
     margin: 0;
 }
 .header .logo {
     position: absolute;
     height: 20vh;
+    max-height: 100px;
 }
 .header .headerSearchArea form{
     margin: 0;
@@ -325,7 +326,7 @@ html, body, row {
 .bestelTabArea .bestelOrder .bestelOrderQuantity .bestelOrderQuantityControl.trash {
     background-color: #e72870;
 }
-.bestelTabArea .bestelOrder .bestelOrderQuantity .bestelOrderQuantityControl.trash a{
+.bestelTabArea .bestelOrder .bestelOrderQuantity .bestelOrderQuantityControl.trash .deletebtn{
     color: #fff;
 }
 .bestelTabArea .bestelOrder .bestelOrderQuantity .bestelOrderQuantityControl a,
