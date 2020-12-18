@@ -270,20 +270,20 @@
                         <div class="card-body">
                             <div class="subtotaal row">
                               <div class="col-6 text-left">Subtotaal</div>
-                              <div class="col-6 text-right">€ 120,00</div>
+                              <div class="col-6 text-right st-value">€ 0,00</div>
                             </div>
                             <div class="korting row">
                                 <div class="col-6 text-left">Korting</div>
-                                <div class="col-6 text-right">- € 12,00</div>
+                                <div class="col-6 text-right ko-value">€ 0,00</div>
                             </div>
                             <div class="btw row">
                                 <div class="col-6 text-left">BTW</div>
-                                <div class="col-6 text-right">€ 25,20</div>
+                                <div class="col-6 text-right btw-value">€ 0,00</div>
                             </div>
                             <hr class="priceCalculatorDivider"/>
                             <div class="totaal row">
                                 <div class="col-6 text-left">Totaal</div>
-                                <div class="col-6 text-right">€ 133,20</div>
+                                <div class="col-6 text-right tot-value">€ 0,00</div>
                             </div>
                         </div>
                     </div>
@@ -317,12 +317,6 @@ if (localStorage.getItem("cart") !== null) {
       let bestelNavigation = $('#bestelNavigationTab');
       let $tab = $(`<a class="flex-sm-fill text-sm-center nav-link" id="bestelNavigation${billItem.rekening}Tab" href="#${billItem.rekening}" role="tab" data-toggle="tab" aria-controls="${billItem.rekening}Tab" aria-selected="true" data-bestel-id="${billItem.rekening}"><span>bestelcode: #${(billItem.rekening).match(/\d/g).join("")}</span><span class="remove-tab"><i class="fas fa-times-circle"></i></span></a>`);
       let $tabPane = $(`<div class="tab-pane fade show" id="${billItem.rekening}"  role="tabpanel" aria-labelledby="${billItem.rekening}Tab" data-bestel-id="${billItem.rekening}"></div>`)  
-      if(billItem.state === 'active') {
-          $('#bestelNavigationTab').children().removeClass("active");
-          $('#bestelNavigationTabContent').children().removeClass("active");
-          $tab.addClass("active");
-          $tabPane.addClass("active");
-      }
       $('#bestelNavigationTab #bestelNavigationnNieuweBestellingTab').after($tab);
       $('#bestelNavigationTabContent').prepend($tabPane);
       let bestelPane = $('#bestelNavigationTabContent').find(`[data-bestel-id='${billItem.rekening}']`);
@@ -363,9 +357,22 @@ if (localStorage.getItem("cart") !== null) {
                     </div>
                 </div>
             `);
-            console.log(parseFloat(product.productData.json.price.final * product.quantity).toFixed(2).replace(".", ","));
+            //console.log(parseFloat(product.productData.json.price.final * product.quantity).toFixed(2).replace(".", ","));
             bestelPane.append(newOrder);
         });
+      }
+      if(billItem.state === 'active') {
+          $('#bestelNavigationTab').children().removeClass("active");
+          $('#bestelNavigationTabContent').children().removeClass("active");
+          $tab.addClass("active");
+          $tabPane.addClass("active");
+          let amountCalc = [];
+          $('#bestelNavigationTabContent .active .bestelOrder').each(function(){
+              amountCalc.push(parseFloat($(this).find('.bestelOrderPrice').text().replace(',', '.').match(/[\d\.]+/)));
+          });
+          let total = amountCalc.reduce((pv,cv)=>{ return pv + (parseFloat(cv)||0) },0);
+          //console.log(total, amountCalc);
+          $('.priceCalculatorArea .st-value').text(`€ ${total.toFixed(2).replace(".", ",")}`)
       }
   });
 
@@ -518,7 +525,6 @@ $(document).ready(function(){
             if($prevTab.attr('data-target') != 'nieuweBestelling'){
                 $prevTab.addClass("active");
                 $prevTabPane.addClass("active");
-
             }
         }else {
             let $nextTabPane = $(`#bestelNavigationTabContent #${tabpaneid}`).next('.tab-pane');
@@ -733,6 +739,28 @@ $(document).ready(function(){
             }
         });;
         
+    });
+    
+    //active tab switcher
+    $(document).on('click', '#bestelNavigationTab a.nav-link[data-toggle="tab"]', function(event){
+        //console.log("tab-changed");
+        let activeRekeningId = $(this).attr('data-bestel-id');
+        cart.forEach(cartItem=>{
+            if(cartItem.rekening === activeRekeningId){
+                cartItem.state = 'active';
+            } else {
+                cartItem.state = 'inactive'
+            }
+        });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        let amountCalc = [];
+        $(`#bestelNavigationTabContent .tab-pane[data-bestel-id=${activeRekeningId}] .bestelOrder`).each(function(){
+            amountCalc.push(parseFloat($(this).find('.bestelOrderPrice').text().replace(',', '.').match(/[\d\.]+/)));
+        });
+        let total = amountCalc.reduce((pv,cv)=>{ return pv + (parseFloat(cv)||0) },0);
+        //console.log(total, amountCalc);
+        $('.priceCalculatorArea .st-value').text(`€ ${total.toFixed(2).replace(".", ",")}`)
+
     });
 
 
