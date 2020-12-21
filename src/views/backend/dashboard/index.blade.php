@@ -511,22 +511,31 @@ $(document).ready(function(){
             'products': []
         });
         localStorage.setItem('cart', JSON.stringify(cart));
+        let activeRekeningId = `bestelcode${$randomBestelCode}`;
+        let amountCalc = [];
+        $(`#bestelNavigationTabContent .tab-pane[data-bestel-id=${activeRekeningId}] .bestelOrder`).each(function(){
+            amountCalc.push(parseFloat($(this).find('.bestelOrderPrice').text().replace(',', '.').match(/[\d\.]+/)));
+        });
+        let total = amountCalc.reduce((pv,cv)=>{ return pv + (parseFloat(cv)||0) },0);
+        $('.priceCalculatorArea .st-value').text(`€ ${total.toFixed(2).replace(".", ",")}`)
     });
     
     // removes products
-    $(document).on("click","#bestelNavigationTab .nav-link .remove-tab",function() {
+    $(document).on("click","#bestelNavigationTab .nav-link .remove-tab",function(event) {
+        event.preventDefault();
+        event.stopPropagation();
         let $tab = $(this).parent();
         let tabpaneid = $($tab).prop('href').split('#')[1];
         let $nextTab = $tab.next('.nav-link');
-        let activeBestelId = $nextTab.attr('data-bestel-id');
+        let $prevTab = $tab.prev('.nav-link');
+        let $activeBestelId = ($nextTab.length == 0) ? $prevTab.attr('data-bestel-id') : $nextTab.attr('data-bestel-id');
         if($nextTab.length == 0){
-            let $prevTab = $tab.prev('.nav-link');
             let $prevTabPane = $(`#bestelNavigationTabContent #${tabpaneid}`).prev('.tab-pane');
             if($prevTab.attr('data-target') != 'nieuweBestelling'){
                 $prevTab.addClass("active");
                 $prevTabPane.addClass("active");
             }
-        }else {
+        }else{
             let $nextTabPane = $(`#bestelNavigationTabContent #${tabpaneid}`).next('.tab-pane');
             $nextTab.addClass("active");
             $nextTabPane.addClass("active");
@@ -534,15 +543,24 @@ $(document).ready(function(){
         $(`#bestelNavigationTabContent #${tabpaneid}`).remove();
         $($tab).remove();
         for (i = 0; i < cart.length; i++) {
-            cart[i].state = 'inactive';
-            if(cart[i].rekening == activeBestelId){
-                cart[i].state = 'active';//set state in cart array
+            if(cart[i].rekening == $activeBestelId){
+                cart[i].state = 'active';
             }
             if(cart[i].rekening == `${tabpaneid}`){
                 cart = cart.filter(item => item !== cart[i]) //remove element from array;
             }
         }
+        console.log($activeBestelId);
         localStorage.setItem('cart', JSON.stringify(cart));
+        let activeRekeningId = $activeBestelId;
+        let amountCalc = [];
+        $(`#bestelNavigationTabContent .tab-pane[data-bestel-id=${activeRekeningId}] .bestelOrder`).each(function(){
+            amountCalc.push(parseFloat($(this).find('.bestelOrderPrice').text().replace(',', '.').match(/[\d\.]+/)));
+        });
+        let total = amountCalc.reduce((pv,cv)=>{ return pv + (parseFloat(cv)||0) },0);
+        console.log($('.priceCalculatorArea .st-value'));
+        console.log(`€ ${total.toFixed(2).replace(".", ",")}`)
+        $('.priceCalculatorArea .st-value').text(`€ ${total.toFixed(2).replace(".", ",")}`);
     });
     // bestel navigation system ends
 
@@ -651,6 +669,13 @@ $(document).ready(function(){
                             </div>
                         `);
                         bestelPane.append(newOrder);
+                        let activeRekeningId = cartItem.rekening;
+                        let amountCalc = [];
+                        $(`#bestelNavigationTabContent .tab-pane[data-bestel-id=${activeRekeningId}] .bestelOrder`).each(function(){
+                            amountCalc.push(parseFloat($(this).find('.bestelOrderPrice').text().replace(',', '.').match(/[\d\.]+/)));
+                        });
+                        let total = amountCalc.reduce((pv,cv)=>{ return pv + (parseFloat(cv)||0) },0);
+                        $('.priceCalculatorArea .st-value').text(`€ ${total.toFixed(2).replace(".", ",")}`);
                     });
                 }
             }
@@ -691,6 +716,13 @@ $(document).ready(function(){
                                 localStorage.setItem('cart', JSON.stringify(cart));
                             }
                         }
+                        let activeRekeningId = cartItem.rekening;
+                        let amountCalc = [];
+                        $(`#bestelNavigationTabContent .tab-pane[data-bestel-id=${activeRekeningId}] .bestelOrder`).each(function(){
+                            amountCalc.push(parseFloat($(this).find('.bestelOrderPrice').text().replace(',', '.').match(/[\d\.]+/)));
+                        });
+                        let total = amountCalc.reduce((pv,cv)=>{ return pv + (parseFloat(cv)||0) },0);
+                        $('.priceCalculatorArea .st-value').text(`€ ${total.toFixed(2).replace(".", ",")}`);
                     }
                 });
             }else{
@@ -718,6 +750,13 @@ $(document).ready(function(){
                         pricecontainer.text(`€ ${parseFloat(product.productData.json.price.final * product.quantity).toFixed(2).replace(".", ",")}`);
                     }
                 });
+                let activeRekeningId = cartItem.rekening;
+                let amountCalc = [];
+                $(`#bestelNavigationTabContent .tab-pane[data-bestel-id=${activeRekeningId}] .bestelOrder`).each(function(){
+                    amountCalc.push(parseFloat($(this).find('.bestelOrderPrice').text().replace(',', '.').match(/[\d\.]+/)));
+                });
+                let total = amountCalc.reduce((pv,cv)=>{ return pv + (parseFloat(cv)||0) },0);
+                $('.priceCalculatorArea .st-value').text(`€ ${total.toFixed(2).replace(".", ",")}`);
             } else {
                 cartItem.state = 'inactive';
             }
@@ -743,7 +782,7 @@ $(document).ready(function(){
     
     //active tab switcher
     $(document).on('click', '#bestelNavigationTab a.nav-link[data-toggle="tab"]', function(event){
-        //console.log("tab-changed");
+        event.preventDefault();
         let activeRekeningId = $(this).attr('data-bestel-id');
         cart.forEach(cartItem=>{
             if(cartItem.rekening === activeRekeningId){
@@ -760,11 +799,13 @@ $(document).ready(function(){
         let total = amountCalc.reduce((pv,cv)=>{ return pv + (parseFloat(cv)||0) },0);
         //console.log(total, amountCalc);
         $('.priceCalculatorArea .st-value').text(`€ ${total.toFixed(2).replace(".", ",")}`)
-
     });
 
 
     // bestel cart area ends
+    $('#bestelNavigationTab a.nav-link[data-toggle="tab"]').change(function () {
+        console.log("something changes", this);
+    });
 });
 </script>
 @endsection
