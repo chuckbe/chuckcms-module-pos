@@ -558,8 +558,8 @@ $(document).ready(function(){
             amountCalc.push(parseFloat($(this).find('.bestelOrderPrice').text().replace(',', '.').match(/[\d\.]+/)));
         });
         let total = amountCalc.reduce((pv,cv)=>{ return pv + (parseFloat(cv)||0) },0);
-        console.log($('.priceCalculatorArea .st-value'));
-        console.log(`€ ${total.toFixed(2).replace(".", ",")}`)
+        //console.log($('.priceCalculatorArea .st-value'));
+        //console.log(`€ ${total.toFixed(2).replace(".", ",")}`)
         $('.priceCalculatorArea .st-value').text(`€ ${total.toFixed(2).replace(".", ",")}`);
     });
     // bestel navigation system ends
@@ -776,8 +776,8 @@ $(document).ready(function(){
                 cart = []
                 localStorage.setItem('cart', JSON.stringify(cart));
             }
-        });;
-        
+        });
+        $('.priceCalculatorArea .st-value').text(`€ 0,00`);
     });
     
     //active tab switcher
